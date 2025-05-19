@@ -67,8 +67,8 @@ AEX_DST="$HOME/cutefishaep/AeNux/Plug-ins"
 CEP_SRC="CEP/flowv1.4.2"
 CEP_DST="$HOME/.wine/drive_c/Program Files (x86)/Common Files/Adobe/CEP/extensions"
 
-PRESET_SRC="preset-backup"
-PRESET_DST="$HOME/cutefishaep/AeNux/Scripts/ScriptUI Panels"
+PRESET_SRC="preset-backup/"
+PRESET_DST="$HOME/Documents/Adobe/After Effects 2024/User Presets"
 
 INSTALLER_SRC="installer"
 
@@ -181,5 +181,21 @@ if $install_installer; then
         echo "[DEBUG] Warning: $INSTALLER_SRC does not exist."
     fi
 fi
+
+# Remove unwanted Wine application shortcuts
+REMOVE_DIRS=(
+    "$HOME/.local/share/applications/wine/Programs/Boris FX, Inc"
+    "$HOME/.local/share/applications/wine/Programs/GenArts Sapphire AE"
+    "$HOME/.local/share/applications/wine/Programs/Red Giant"
+)
+
+for dir in "${REMOVE_DIRS[@]}"; do
+    if [ -d "$dir" ]; then
+        echo "[DEBUG] Removing $dir"
+        rm -rf "$dir"
+    else
+        echo "[DEBUG] $dir does not exist, skipping."
+    fi
+done
 
 echo "[DEBUG] All done!"

@@ -5,7 +5,7 @@ set -x
 # Set target directories (must match plugin.sh)
 AEX_DST="$HOME/cutefishaep/AeNux/Plug-ins"
 CEP_DST="$HOME/.wine/drive_c/Program Files (x86)/Common Files/Adobe/CEP/extensions"
-PRESET_DST="$HOME/cutefishaep/AeNux/Scripts/ScriptUI Panels"
+PRESET_DST="$HOME/Documents/Adobe/After Effects 2024/User Presets"
 
 # Check for Zenity
 if ! command -v zenity &> /dev/null; then
