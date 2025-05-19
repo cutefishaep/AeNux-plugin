@@ -183,19 +183,33 @@ if $install_installer; then
 fi
 
 # Remove unwanted Wine application shortcuts
+#!/bin/bash
+# Remove unwanted Wine application shortcuts
+# Disable globbing to prevent issues with special characters
+set -f
+
+# Check if the script is run with sudo or as root
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run with sudo or as root."
+  exit 1
+fi
+
 REMOVE_DIRS=(
     "$HOME/.local/share/applications/wine/Programs/Boris FX, Inc"
-    "$HOME/.local/share/applications/wine/Programs/GenArts Sapphire AE"
-    "$HOME/.local/share/applications/wine/Programs/Red Giant"
+    "$HOME/.local/share/applications/wine/Programs/GenArts\ Sapphire\ AE"
+    "$HOME/.local/share/applications/wine/Programs/Red\ Giant"
 )
 
 for dir in "${REMOVE_DIRS[@]}"; do
     if [ -d "$dir" ]; then
-        echo "[DEBUG] Removing $dir"
+        echo "[DEBUG] Removing \"$dir\""
         rm -rf "$dir"
     else
-        echo "[DEBUG] $dir does not exist, skipping."
+        echo "[DEBUG] \"$dir\" does not exist, skipping."
     fi
 done
+
+# Re-enable globbing if needed
+set +f
 
 echo "[DEBUG] All done!"
