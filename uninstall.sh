@@ -67,13 +67,33 @@ if $uninstall_cep; then
 fi
 
 if $uninstall_preset; then
-    echo "[DEBUG] Removing preset-backup..."
-    if [ -d "$PRESET_DST/preset-backup" ]; then
-        rm -rf "$PRESET_DST/preset-backup"
-        echo "[DEBUG] $PRESET_DST/preset-backup removed."
-    else
-        echo "[DEBUG] $PRESET_DST/preset-backup does not exist."
-    fi
+    echo "[DEBUG] Removing preset folders..."
+    PRESET_FOLDERS=(
+        "Adobe Express"
+        "AeNux"
+        "Backgrounds"
+        "Behaviors"
+        "Image - Creative"
+        "Image - Special Effects"
+        "Image - Utilities"
+        "Legacy"
+        "Shapes"
+        "Sound Effects"
+        "Synthetics"
+        "Text"
+        "Transitions - Dissolves"
+        "Transitions - Movement"
+        "Transitions - Wipes"
+    )
+    for folder in "${PRESET_FOLDERS[@]}"; do
+        target="$PRESET_DST/$folder"
+        if [ -d "$target" ]; then
+            rm -rf "$target"
+            echo "[DEBUG] $target removed."
+        else
+            echo "[DEBUG] $target does not exist."
+        fi
+    done
 fi
 
 if $uninstall_installer; then

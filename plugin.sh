@@ -151,65 +151,65 @@ if $install_installer; then
     echo "[DEBUG] Prompting user with Zenity..."
     zenity --question \
         --title="Manual Installation Required" \
-        --text="After this, you will install software in .exe format. This process cannot be done automatically—you will need to manually copy the files to:\n\n$HOME/cutefishaep/AeNux/Plug-ins (for plugins)\n$HOME/cutefishaep/AeNux/Scripts/ScriptUI Panels (for script panels).\n\nDo you want to continue?" \
-        --ok-label="I understand" \
+        --text="After this, you will install software in .exe format. This process cannot be done automatically—you will need to manually copy the files to:\n\n$HOME/cutefishaep/AeNux/Plug-ins (for plugins)\n\nDo you want to continue?" \
+        --ok-label="Yes" \
         --cancel-label="Nevermind"
 
     if [ $? -ne 0 ]; then
         echo "[DEBUG] Installation cancelled."
         exit 1
     fi
-
     if [ -d "$INSTALLER_SRC" ]; then
         cd "$INSTALLER_SRC"
+
+        # Separate E3D.exe and saber.exe from other installers
+        E3D_EXE="E3D.exe"
+        SABER_EXE="saber.exe"
+
+        # Install all .exe except E3D.exe and saber.exe
         for exe in *.exe; do
-            if [ -f "$exe" ]; then
+            if [ -f "$exe" ] && [[ "$exe" != "$E3D_EXE" && "$exe" != "$SABER_EXE" ]]; then
                 echo "[DEBUG] Installing: $exe"
                 wine "$exe" /verysilent /suppressmsgboxes || echo "[DEBUG] Failed to install $exe"
-                if [ -f "Element.aex" ]; then
-                    cp "Element.aex" "$AEX_DST"/
-                    echo "[DEBUG] Copied Element.aex to $AEX_DST"
-                fi
-                if [ -f "Element.license" ]; then
-                    cp "Element.license" "$AEX_DST"/
-                    echo "[DEBUG] Copied Element.license to $AEX_DST"
-                fi
             fi
         done
+
+        # Now run E3D.exe and saber.exe, but do not copy Element.aex or Element.license yet
+        while true; do
+            for special_exe in "$E3D_EXE" "$SABER_EXE"; do
+                if [ -f "$special_exe" ]; then
+                    echo "[DEBUG] Running installer: $special_exe"
+                    wine "$special_exe" || echo "[DEBUG] Failed to run $special_exe"
+                else
+                    echo "[DEBUG] $special_exe not found, skipping."
+                fi
+            done
+
+            zenity --question \
+                --title="Manual Step Required" \
+                --text="Are you done installing Element3D and Saber?" \
+                --ok-label="Yes" \
+                --cancel-label="No"
+
+            if [ $? -eq 0 ]; then
+                break
+            fi
+        done
+
+        # After confirmation, copy Element.aex and Element.license if they exist
+        if [ -f "Element.aex" ]; then
+            cp "Element.aex" "$AEX_DST"/
+            echo "[DEBUG] Copied Element.aex to $AEX_DST"
+        fi
+        if [ -f "Element.license" ]; then
+            cp "Element.license" "$AEX_DST"/
+            echo "[DEBUG] Copied Element.license to $AEX_DST"
+        fi
+
         cd - > /dev/null
     else
         echo "[DEBUG] Warning: $INSTALLER_SRC does not exist."
     fi
 fi
-
-# Remove unwanted Wine application shortcuts
-#!/bin/bash
-# Remove unwanted Wine application shortcuts
-# Disable globbing to prevent issues with special characters
-set -f
-
-# Check if the script is run with sudo or as root
-if [[ $EUID -ne 0 ]]; then
-  echo "This script must be run with sudo or as root."
-  exit 1
-fi
-
-REMOVE_DIRS=(
-    "$HOME/.local/share/applications/wine/Programs/Boris FX, Inc"
-    "$HOME/.local/share/applications/wine/Programs/GenArts\ Sapphire\ AE"
-    "$HOME/.local/share/applications/wine/Programs/Red\ Giant"
-)
-
-for dir in "${REMOVE_DIRS[@]}"; do
-    if [ -d "$dir" ]; then
-        echo "[DEBUG] Removing \"$dir\""
-        rm -rf "$dir"
-    else
-        echo "[DEBUG] \"$dir\" does not exist, skipping."
-    fi
-done
-
-# Re-enable globbing if needed
-set +f
 
 echo "[DEBUG] All done!"
