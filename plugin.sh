@@ -198,11 +198,11 @@ if $install_installer; then
 
         # After confirmation, copy Element.aex and Element.license if they exist
         if [ -f "Element.aex" ]; then
-            cp "Element.aex" "$AEX_DST"/
+            cp "Element.aex" "$AEX_DST/VideoCopilot"/
             echo "[DEBUG] Copied Element.aex to $AEX_DST"
         fi
         if [ -f "Element.license" ]; then
-            cp "Element.license" "$AEX_DST"/
+            cp "Element.license" "$AEX_DST/VideoCopilot"/
             echo "[DEBUG] Copied Element.license to $AEX_DST"
         fi
 
