@@ -88,6 +88,7 @@ if $uninstall_preset; then
     for folder in "${PRESET_FOLDERS[@]}"; do
         target="$PRESET_DST/$folder"
         if [ -d "$target" ]; then
+        cd "$HOME/Documents"
             rm -rf "$target"
             echo "[DEBUG] $target removed."
         else
