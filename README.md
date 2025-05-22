@@ -30,6 +30,20 @@ AeNux-plugin/
 
 ---
 
+## ❤️ Plugin list
+
+```
+- BCC
+- SAPP***
+- Element **
+- Flow
+- R* Universe
+- Twix***
+- RS**
+- GLITCH***
+AND MORE!!
+```
+
 ## 🛠️ Requirements
 
 - **Linux** (tested on Ubuntu/Debian)
