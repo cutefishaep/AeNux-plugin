@@ -124,8 +124,8 @@ fi
 
 if $install_cep; then
     echo "[DEBUG] Copying CEP flow extension..."
-    if [ -f "AddKeys.reg" ]; then
-        wine regedit "AddKeys.reg"
+    if [ -f "CEP/AddKeys.reg" ]; then
+        wine regedit "CEP/AddKeys.reg"
     else
         echo "[DEBUG] Warning: AddKeys.reg not found, skipping registry import."
     fi
