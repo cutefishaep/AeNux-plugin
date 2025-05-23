@@ -131,7 +131,7 @@ if $install_cep; then
     fi
     mkdir -p "$CEP_DST"
     if [ -d "$CEP_SRC" ] && [ "$(ls -A "$CEP_SRC")" ]; then
-        cp -r "$CEP_SRC" "$CEP_DST"/
+        wine regedit "$CEP_DST/AddKeys.reg"
     else
         echo "[DEBUG] Warning: $CEP_SRC is empty or does not exist."
     fi
