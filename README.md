@@ -1,4 +1,4 @@
-# 🎬 AeNux Plugin Installer
+# 🎬 AeNux Plugin Installer (DISCONTINUED)
 
 A simple, interactive Bash script to help you install and manage After Effects plugins, extensions, and presets on Linux (with Wine).  
 **Supports:** `.aex` plugins, CEP extensions, presets, and Windows installers.
